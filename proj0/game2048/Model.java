@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author NJ
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -137,7 +137,13 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        for (int i = 0; i < b.size(); i++){
+            for (int j = 0; j < b.size(); j++){
+                if (b.tile(i,j) == null){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -147,9 +153,28 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        for (int i = 0; i < b.size(); i++) {
+            for (int j = 0; j < b.size(); j++) {
+                if (b.tile(i,j) != null){
+
+                    if(b.tile(i,j).value() == MAX_PIECE){
+
+                        return true;
+
+                    }
+                }
+            }
+        }
         return false;
     }
+
+    public static boolean compareTiles(Tile t1, Tile t2) {
+        if (t1.value() == t2.value()) {
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * Returns true if there are any valid moves on the board.
@@ -158,7 +183,30 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        if(emptySpaceExists(b) == true) {
+            return true;
+        }
+
+        for (int i = 0; i < b.size(); i++) {
+            for (int j = 0; j < b.size(); j++) {
+
+                int[][] adjacent_tiles = new int[4][4];
+
+                adjacent_tiles[0] = new int[] {Math.max(0, i-1), j};
+                adjacent_tiles[1] = new int[] {Math.min(b.size()-1, i+1), j};
+                adjacent_tiles[2] = new int[] {i, Math.max(0, j-1)};
+                adjacent_tiles[3] = new int[] {i, Math.min(b.size()-1, j+1)};
+
+                for(int[] x: adjacent_tiles) {
+                    if (compareTiles(b.tile(i,j), b.tile(x[0], x[1])) & (i != x[0] ^ j != x[1])) {
+                        return true;
+                    }
+                }
+
+
+            }
+        }
+
         return false;
     }
 
