@@ -1,6 +1,5 @@
 package game2048;
 
-import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Observable;
 
@@ -113,7 +112,7 @@ public class Model extends Observable {
         if (y == board.size() - 1) {
             return new int[] {x, y, 0};
         } else if (board.tile(x, y + 1) != null) {
-            if (board.tile(x, y + 1).value() != v || upperMerged[y+1] == 1) {
+            if (board.tile(x, y + 1).value() != v || upperMerged[y + 1] == 1) {
                 return new int[] {x, y, 0};
             }
 
@@ -124,16 +123,19 @@ public class Model extends Observable {
         return moveTileHelper(x, y + 1, v, upperMerged);
     }
 
-    public int[] moveTileUpAsFarAsPossible(int x, int y, int columnMergedStatus[]) {
+    public int[] moveTileUpAsFarAsPossible(int x, int y, int[] columnMergedStatus) {
         Tile currTile = board.tile(x, y);
-        int[] mergedInfo = {0,y};
+        int[] mergedInfo = {0, y, 0};
         //int upperMerged = moveTileHelper(x,y)[1];
 
         if (currTile != null & y < board.size() - 1) {
             int myValue = currTile.value();
-            int[] moveValues = {moveTileHelper(x, y, myValue, columnMergedStatus)[1], moveTileHelper(x, y, myValue, columnMergedStatus)[2]};
+            int[] moveValues = {moveTileHelper(x, y, myValue, columnMergedStatus)[1],
+                    moveTileHelper(x, y, myValue, columnMergedStatus)[2]};
             if (moveValues[0] != y) {
                 boolean merged = board.move(x, moveValues[0], currTile);
+                mergedInfo[2] = 1;
+
                 if (merged) {
                     mergedInfo[0] = 1;
                     mergedInfo[1] = moveValues[0];
@@ -152,16 +154,21 @@ public class Model extends Observable {
      * The viewing perspective has already been set,
      * so we are tilting the tiles in this column up.
      * */
-    public void tiltColumn(int x) {
+    public boolean tiltColumn(int x) {
+        boolean changed = false;
 
         int[] columnMergedStatus = {0, 0, 0, 0, 0};
 
         for (int i = board.size() - 1; i >= 0; i--) {
             if (board.tile(x, i) != null) {
-                int[] MergedInfo = moveTileUpAsFarAsPossible(x, i, columnMergedStatus);
-                columnMergedStatus[MergedInfo[1]] = MergedInfo[0];
+                int[] mergedInfo = moveTileUpAsFarAsPossible(x, i, columnMergedStatus);
+                columnMergedStatus[mergedInfo[1]] = mergedInfo[0];
+                if (mergedInfo[2] == 1) {
+                    changed = true;
+                }
             }
         }
+        return changed;
     }
 
 
@@ -171,10 +178,13 @@ public class Model extends Observable {
 
         board.setViewingPerspective(side);
         for (int i = 0; i <= board.size() - 1; i++) {
-            tiltColumn(i);
+            boolean changedTrue = tiltColumn(i);
+            if (changedTrue) {
+                changed = true;
+            }
         }
         board.setViewingPerspective(Side.NORTH);
-        changed = true;
+        //changed = true;
 
         checkGameOver();
         if (changed) {
@@ -217,9 +227,9 @@ public class Model extends Observable {
     public static boolean maxTileExists(Board b) {
         for (int i = 0; i < b.size(); i++) {
             for (int j = 0; j < b.size(); j++) {
-                if (b.tile(i,j) != null){
+                if (b.tile(i, j) != null) {
 
-                    if(b.tile(i,j).value() == MAX_PIECE){
+                    if (b.tile(i, j).value() == MAX_PIECE) {
 
                         return true;
 
@@ -245,22 +255,22 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        if(emptySpaceExists(b) == true) {
+        if (emptySpaceExists(b)) {
             return true;
         }
 
         for (int i = 0; i < b.size(); i++) {
             for (int j = 0; j < b.size(); j++) {
 
-                int[][] adjacent_tiles = new int[4][4];
+                int[][] adjacentTiles = new int[4][4];
 
-                adjacent_tiles[0] = new int[] {Math.max(0, i-1), j};
-                adjacent_tiles[1] = new int[] {Math.min(b.size()-1, i+1), j};
-                adjacent_tiles[2] = new int[] {i, Math.max(0, j-1)};
-                adjacent_tiles[3] = new int[] {i, Math.min(b.size()-1, j+1)};
+                adjacentTiles[0] = new int[] {Math.max(0, i - 1), j};
+                adjacentTiles[1] = new int[] {Math.min(b.size() - 1, i + 1), j};
+                adjacentTiles[2] = new int[] {i, Math.max(0, j - 1)};
+                adjacentTiles[3] = new int[] {i, Math.min(b.size() - 1, j + 1)};
 
-                for(int[] x: adjacent_tiles) {
-                    if (compareTiles(b.tile(i,j), b.tile(x[0], x[1])) & (i != x[0] ^ j != x[1])) {
+                for (int[] x: adjacentTiles) {
+                    if (compareTiles(b.tile(i, j), b.tile(x[0], x[1])) & (i != x[0] ^ j != x[1])) {
                         return true;
                     }
                 }
@@ -274,7 +284,7 @@ public class Model extends Observable {
 
 
     @Override
-     /** Returns the model as a string, used for debugging. */
+    /** Returns the model as a string, used for debugging. */
     public String toString() {
         Formatter out = new Formatter();
         out.format("%n[%n");
