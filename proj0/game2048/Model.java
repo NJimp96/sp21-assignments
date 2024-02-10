@@ -1,5 +1,6 @@
 package game2048;
 
+import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Observable;
 
@@ -106,13 +107,74 @@ public class Model extends Observable {
      *    value, then the leading two tiles in the direction of motion merge,
      *    and the trailing tile does not.
      * */
+
+    public int[] moveTileHelper(int x, int y, int v, int[] upperMerged) {
+
+        if (y == board.size() - 1) {
+            return new int[] {x, y, 0};
+        } else if (board.tile(x, y + 1) != null) {
+            if (board.tile(x, y + 1).value() != v || upperMerged[y+1] == 1) {
+                return new int[] {x, y, 0};
+            }
+
+            return new int[] {x, y + 1, 1};
+        }
+
+
+        return moveTileHelper(x, y + 1, v, upperMerged);
+    }
+
+    public int[] moveTileUpAsFarAsPossible(int x, int y, int columnMergedStatus[]) {
+        Tile currTile = board.tile(x, y);
+        int[] mergedInfo = {0,y};
+        //int upperMerged = moveTileHelper(x,y)[1];
+
+        if (currTile != null & y < board.size() - 1) {
+            int myValue = currTile.value();
+            int[] moveValues = {moveTileHelper(x, y, myValue, columnMergedStatus)[1], moveTileHelper(x, y, myValue, columnMergedStatus)[2]};
+            if (moveValues[0] != y) {
+                boolean merged = board.move(x, moveValues[0], currTile);
+                if (merged) {
+                    mergedInfo[0] = 1;
+                    mergedInfo[1] = moveValues[0];
+                }
+
+                if (moveValues[1] == 1) {
+                    score += myValue * 2;
+                }
+            }
+        }
+        return mergedInfo;
+    }
+
+    /** Handles the movements of the tilt in column x of the board
+     * by moving every tile in the column as far up as possible.
+     * The viewing perspective has already been set,
+     * so we are tilting the tiles in this column up.
+     * */
+    public void tiltColumn(int x) {
+
+        int[] columnMergedStatus = {0, 0, 0, 0, 0};
+
+        for (int i = board.size() - 1; i >= 0; i--) {
+            if (board.tile(x, i) != null) {
+                int[] MergedInfo = moveTileUpAsFarAsPossible(x, i, columnMergedStatus);
+                columnMergedStatus[MergedInfo[1]] = MergedInfo[0];
+            }
+        }
+    }
+
+
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
 
-        // TODO: Modify this.board (and perhaps this.score) to account
-        // for the tilt to the Side SIDE. If the board changed, set the
-        // changed local variable to true.
+        board.setViewingPerspective(side);
+        for (int i = 0; i <= board.size() - 1; i++) {
+            tiltColumn(i);
+        }
+        board.setViewingPerspective(Side.NORTH);
+        changed = true;
 
         checkGameOver();
         if (changed) {
@@ -137,9 +199,9 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        for (int i = 0; i < b.size(); i++){
-            for (int j = 0; j < b.size(); j++){
-                if (b.tile(i,j) == null){
+        for (int i = 0; i < b.size(); i++) {
+            for (int j = 0; j < b.size(); j++) {
+                if (b.tile(i, j) == null) {
                     return true;
                 }
             }
