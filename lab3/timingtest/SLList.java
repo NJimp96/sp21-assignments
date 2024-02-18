@@ -66,6 +66,18 @@ public class SLList<Item> {
 		return p.item;
 	}
 
+	public Item get(int i) {
+		IntNode p = sentinel;
+		int j = 0;
+
+		while (j <= i) {
+			p = p.next;
+			j++;
+
+		}
+		return p.item;
+	}
+
 
 	/** Returns the size of the list. */
 	public int size() {

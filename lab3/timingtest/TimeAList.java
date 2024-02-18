@@ -21,7 +21,34 @@ public class TimeAList {
         timeAListConstruction();
     }
 
+    public static int createAList(int desiredSize) {
+        AList<Integer> listToTime = new AList<>();
+        int ops = 0;
+
+        for(int i = 0; i < desiredSize; i++) {
+            listToTime.addLast(i);
+            ops++;
+        }
+        return ops;
+    }
     public static void timeAListConstruction() {
-        // TODO: YOUR CODE HERE
+        AList<Integer> listSizes = new AList<>();
+        AList<Integer> listOps = new AList<>();
+        AList<Double> listTimes = new AList<>();
+
+
+        for(double n = 0; n < 8; n++) {
+            int listSize = (int) (Math.pow(2, n) * 1000);
+            Stopwatch sw = new Stopwatch();
+            int opsCompleted = createAList(listSize);
+            double timeInSeconds = sw.elapsedTime();
+
+            listSizes.addLast(listSize);
+            listOps.addLast(opsCompleted);
+            listTimes.addLast(timeInSeconds);
+        }
+
+        printTimingTable(listSizes, listTimes, listOps);
+
     }
 }
