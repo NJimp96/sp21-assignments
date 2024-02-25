@@ -122,7 +122,7 @@ public class LinkedListDeque<T> implements Deque<T> {
     If no such item exists, returns null. Must not alter the deque
      */
     public T get(int index) {
-        if (index >= size) {
+        if (index >= size || index < 0) {
             System.out.println("Index out of bounds for the given Linked List Deque");
             return null;
         }
@@ -134,6 +134,29 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
 
         return currentNode.item;
+    }
+
+    /* Recursively goes through the nodes in a linked list deque until the required index is reached. */
+    private T getNodeRecursive(int index, Node currentNode) {
+
+        if (index == 0) {
+            return currentNode.item;
+        }
+
+        return getNodeRecursive(index - 1, currentNode.next);
+    }
+
+    /* Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+    If no such item exists, returns null. Must not alter the deque.
+    Uses recursion
+     */
+    public T getRecursive(int index) {
+        if (index >= size || index < 0) {
+            System.out.println("Index out of bounds for the given Linked List Deque");
+            return null;
+        }
+
+        return getNodeRecursive(index, sentinel.next);
     }
 
     /* Returns whether or not the parameter o is equal to the Deque.

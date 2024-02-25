@@ -63,12 +63,12 @@ public class LinkedListDequeTest {
         lld1.printDeque();
 
 		lld1.removeFirst();
-		// should be empty
+		// should not be empty
         assertEquals("lld1 should contain 2 items", 2, lld1.size());
         lld1.printDeque();
 
         lld1.removeLast();
-        // should be empty
+        // should not be empty
         assertEquals("lld1 should contain 1 items", 1, lld1.size());
         lld1.printDeque();
 
@@ -99,6 +99,30 @@ public class LinkedListDequeTest {
 
         for (int i = 0; i < lld1.size() + 1; i++) {
             System.out.println(lld1.get(i));
+        }
+    }
+
+    @Test
+    public void getRecursiveTest() {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        lld1.addLast(20);
+        // should not be empty
+        assertEquals("lld1 should contain 1 item", 1, lld1.size());
+        lld1.printDeque();
+
+        lld1.addFirst(10);
+        // should not be empty
+        assertEquals("lld1 should contain 2 items", 2, lld1.size());
+        lld1.printDeque();
+
+        lld1.addFirst(0);
+        // should not be empty
+        assertEquals("lld1 should contain 3 item", 3, lld1.size());
+        lld1.printDeque();
+
+        for (int i = 0; i < lld1.size() + 1; i++) {
+            System.out.println(lld1.getRecursive(i));
+            System.out.println(lld1.getRecursive(i - 1));
         }
     }
 
