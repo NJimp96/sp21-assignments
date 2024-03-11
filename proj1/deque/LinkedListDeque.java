@@ -25,6 +25,7 @@ public class LinkedListDeque<T> implements Deque<T> {
         last = sentinel.next;
     }
 
+    /*Creates an empty linked list deque*/
     public LinkedListDeque(T x) {
         size = 1;
         sentinel = new Node(null, null, null);
@@ -42,6 +43,7 @@ public class LinkedListDeque<T> implements Deque<T> {
         last = sentinel.prev;
     }
 
+    /* Adds an item of type T to the front of the deque. Item is never null*/
     public void addLast(T z) {
         size += 1;
         Node newLast = new Node(z, sentinel, last);

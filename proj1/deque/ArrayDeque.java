@@ -9,6 +9,7 @@ public class ArrayDeque<T> implements Deque<T> {
     private int nextLast;
     private int size;
 
+    /*Creates an empty array deque*/
     public ArrayDeque() {
         items = (T[]) new Object[8];
         size = 0;
@@ -16,6 +17,7 @@ public class ArrayDeque<T> implements Deque<T> {
         nextLast = 4;
     }
 
+    /*Moves the pointer to the base deque to the left*/
     private int movePointerLeft(int pointerPos, int itemsLength) {
         int newPointerPos = pointerPos - 1;
 
@@ -25,6 +27,7 @@ public class ArrayDeque<T> implements Deque<T> {
         return newPointerPos;
     }
 
+    /*Moves the pointer to the base deque to the right*/
     private int movePointerRight(int pointerPos, int itemsLength) {
         int newPointerPos = pointerPos + 1;
 
@@ -34,6 +37,7 @@ public class ArrayDeque<T> implements Deque<T> {
         return newPointerPos;
     }
 
+    /*Transfers items from one array to the another*/
     private int transferArrayItems(int oldStartingPoint, int newStartingPoint, T[] newArray) {
         int oldPointer = oldStartingPoint;
         int newPointer = newStartingPoint;
@@ -50,6 +54,7 @@ public class ArrayDeque<T> implements Deque<T> {
         return movePointerRight(newPointer, newArray.length);
     }
 
+        /*Resizes array to ensure length of base deque is bigger than the list of items but also that the items constitute 25% of the lenght of the
     private void resize() {
         if((size >= items.length - 1) || (items.length / 4 > size & size > 16)) {
             T[] newitems = (T[]) new Object[8];
@@ -154,10 +159,8 @@ public class ArrayDeque<T> implements Deque<T> {
 
         return items[nextLast];
     }
-    /* Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
-    If no such item exists, returns null. Must not alter the deque
-     */
 
+    /*Given an index of the conceptual array. Find the corresponding index in the base array*/
     private int getConceptualDequeIndex(int index) {
         int first = movePointerRight(nextFirst, items.length);
         int conceptualDequeIndex = index + first;
@@ -168,6 +171,9 @@ public class ArrayDeque<T> implements Deque<T> {
         return conceptualDequeIndex;
     }
 
+    /* Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+    If no such item exists, returns null. Must not alter the deque
+     */
     public T get(int index) {
         if(index < 0 || index >= size) {
             return null;
