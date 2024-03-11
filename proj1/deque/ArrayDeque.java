@@ -9,6 +9,9 @@ public class ArrayDeque<T> implements Deque<T> {
     private int nextLast;
     private int size;
 
+    /*min size of arraydeque for resizing smaller*/
+    private int minResize = 16;
+
     /*Creates an empty array deque*/
     public ArrayDeque() {
         items = (T[]) new Object[8];
@@ -46,7 +49,7 @@ public class ArrayDeque<T> implements Deque<T> {
         newArray[newPointer] = items[oldPointer];
 
 
-        while(oldPointer != oldLast) {
+        while (oldPointer != oldLast) {
             oldPointer = movePointerRight(oldPointer, items.length);
             newPointer = movePointerRight(newPointer, newArray.length);
             newArray[newPointer] = items[oldPointer];
@@ -54,15 +57,16 @@ public class ArrayDeque<T> implements Deque<T> {
         return movePointerRight(newPointer, newArray.length);
     }
 
-        /*Resizes array to ensure length of base deque is bigger than the list of items but also that the items constitute 25% of the lenght of the
+    /*Resizes array to ensure length of base deque is bigger than the list of items
+    but also that the items constitute 25% of the length of the base array*/
     private void resize() {
-        if((size >= items.length - 1) || (items.length / 4 > size & size > 16)) {
+        if ((size >= items.length - 1) || (items.length / 4 > size & size > minResize)) {
             T[] newitems = (T[]) new Object[8];
 
             if (size >= items.length - 1) {
                 int arrayLength = items.length * 2;
                 newitems = (T[]) new Object[arrayLength];
-            } else if(items.length / 4 > size & size > 16) {
+            } else if (items.length / 4 > size & size > minResize) {
                 int arrayLength = items.length / 2;
                 newitems = (T[]) new Object[arrayLength];
             }
@@ -113,7 +117,7 @@ public class ArrayDeque<T> implements Deque<T> {
     /* Prints the items in the deque from first to last, separated by a space.
     Once all the items have been printed, print out a new line */
     public void printDeque() {
-        if(size == 0) {
+        if (size == 0) {
             System.out.println("Deque is empty");
         } else {
 
@@ -137,7 +141,7 @@ public class ArrayDeque<T> implements Deque<T> {
     /* Removes and returns the item at the front of the deque. If no such item exists, returns null */
     public T removeFirst() {
         resize();
-        if(size == 0) {
+        if (size == 0) {
             return null;
         }
         size -= 1;
@@ -150,7 +154,7 @@ public class ArrayDeque<T> implements Deque<T> {
     /* Removes and returns the item at the end of the deque. If no such item exists, returns null */
     public T removeLast() {
         resize();
-        if(size == 0) {
+        if (size == 0) {
             return null;
         }
         size -= 1;
@@ -165,7 +169,7 @@ public class ArrayDeque<T> implements Deque<T> {
         int first = movePointerRight(nextFirst, items.length);
         int conceptualDequeIndex = index + first;
 
-        if(conceptualDequeIndex >= items.length) {
+        if (conceptualDequeIndex >= items.length) {
             conceptualDequeIndex -= items.length;
         }
         return conceptualDequeIndex;
@@ -175,7 +179,7 @@ public class ArrayDeque<T> implements Deque<T> {
     If no such item exists, returns null. Must not alter the deque
      */
     public T get(int index) {
-        if(index < 0 || index >= size) {
+        if (index < 0 || index >= size) {
             return null;
         }
 
