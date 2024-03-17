@@ -36,6 +36,6 @@ public interface Deque<T> {
     /* Returns whether or not the parameter o is equal to the Deque.
      o is considered equal if it is a Deque and if it contains the same contents
      */
-    //public boolean equals(Object o);
+    public boolean equals(Object o);
 
 }
