@@ -233,7 +233,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     */
     @Override
     public boolean equals(Object other) {
-        if (this == other) { return true;}
+        if (this == other) {
+            return true;
+        }
         if (other instanceof ArrayDeque) {
             if (this.size != ((ArrayDeque<T>) other).size) {
                 return false;
