@@ -2,6 +2,8 @@ package deque;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
@@ -85,7 +87,12 @@ public class ArrayDequeTest {
         ad1.removeFirst();
         assertEquals("Item at position 0 should be 'b'", "b", ad1.get(0));
         ad1.removeLast();
-        ad1.printDeque();
+        Iterator<String> seer = ad1.iterator();
+
+        while (seer.hasNext()) {
+            String i = seer.next();
+            System.out.println(i);
+        }
     }
 
     @Test
@@ -122,6 +129,14 @@ public class ArrayDequeTest {
 
         System.out.println("Printing out deque: ");
         lld1.printDeque();
+
+        Iterator<String> seer = lld1.iterator();
+
+        while (seer.hasNext()) {
+            String i = seer.next();
+            System.out.println(i);
+        }
+
 
     }
 
@@ -272,5 +287,19 @@ public class ArrayDequeTest {
         }
 
 
+    }
+
+    @Test
+    public void bigArrayEqualsTest() {
+        ArrayDeque<Integer> ad1 = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> ad2 = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> ad3 = new ArrayDeque<Integer>();
+        for (int i = 0; i < 10000; i++) {
+            ad1.addLast(i);
+            ad2.addFirst(i);
+            ad3.addFirst(i*2);
+        }
+        assertTrue(ad1.equals(ad2));
+        assertFalse(ad2.equals(ad3));
     }
 }

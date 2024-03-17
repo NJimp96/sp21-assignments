@@ -1,6 +1,9 @@
 package deque;
 
 import org.junit.Test;
+
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 
@@ -61,6 +64,12 @@ public class LinkedListDequeTest {
         // should not be empty
         assertEquals("lld1 should contain 3 item", 3, lld1.size());
         lld1.printDeque();
+        Iterator<Integer> seer = lld1.iterator();
+
+        while (seer.hasNext()) {
+            Integer i = seer.next();
+            System.out.println(i);
+        }
 
 		lld1.removeFirst();
 		// should not be empty
@@ -76,6 +85,12 @@ public class LinkedListDequeTest {
         // should be empty
         assertTrue("lld1 should be empty after removing all items", lld1.isEmpty());
         lld1.printDeque();
+        Iterator<Integer> seer2 = lld1.iterator();
+
+        while (seer2.hasNext()) {
+            Integer i = seer2.next();
+            System.out.println(i);
+        }
 
     }
 
@@ -203,5 +218,19 @@ public class LinkedListDequeTest {
         }
 
 
+    }
+
+    @Test
+    public void bigLLEqualsTest() {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> lld2 = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> lld3 = new LinkedListDeque<Integer>();
+        for (int i = 0; i < 10000; i++) {
+            lld1.addLast(i);
+            lld2.addFirst(i);
+            lld3.addFirst(i*2);
+        }
+        assertTrue(lld1.equals(lld2));
+        assertFalse(lld2.equals(lld3));
     }
 }

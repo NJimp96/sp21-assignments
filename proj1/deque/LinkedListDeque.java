@@ -1,6 +1,8 @@
 package deque;
 
-public class LinkedListDeque<T> implements Deque<T> {
+import java.util.Iterator;
+
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     public class Node {
         public T item;
         public Node next;
@@ -159,11 +161,62 @@ public class LinkedListDeque<T> implements Deque<T> {
         return getNodeRecursive(index, sentinel.next);
     }
 
+    /*Creates iterator class to make the Deque iterable*/
+    private class LLIterator implements Iterator<T> {
+        Node wizpos;
+
+        /*Initializes iterator*/
+        public LLIterator() {
+            wizpos = sentinel.next;
+        }
+
+        @Override
+        /*Checks if collection has next item*/
+        public boolean hasNext() {
+            return wizpos != sentinel;
+        }
+
+        /*Outputs the next item in the Deque*/
+        public T next() {
+            T returnItem = wizpos.item;
+            wizpos = wizpos.next;
+            return returnItem;
+        }
+    }
+
+    /*Public iterator*/
+    public Iterator<T> iterator() {
+        return new LLIterator();
+    }
+
+    /*Checks if element exists in the LinkedListDeque*/
+    private boolean contains(T x) {
+        for (T y: this) {
+            if (x.equals(y)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /* Returns whether or not the parameter o is equal to the Deque.
      o is considered equal if it is a Deque and if it contains the same contents
      */
-//    public boolean equals(Object o) {
-//        //TODO fill in required code
-//        return false;
-//    }
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) { return true;}
+        if (other instanceof LinkedListDeque) {
+            if (this.size != ((LinkedListDeque<T>) other).size) {
+                return false;
+            }
+            for (T x: this) {
+                if (!((LinkedListDeque<T>) other).contains(x)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }

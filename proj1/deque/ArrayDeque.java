@@ -1,6 +1,8 @@
 package deque;
 
-public class ArrayDeque<T> implements Deque<T> {
+import java.util.Iterator;
+
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     private T[] items;
     //private int first;
@@ -185,5 +187,64 @@ public class ArrayDeque<T> implements Deque<T> {
 
         int conceptualDequeIndex = getConceptualDequeIndex(index);
         return items[conceptualDequeIndex];
+    }
+
+    /*Creates iterator class to make the Deque iterable*/
+    private class ArrayListIterator implements Iterator<T> {
+        private int wizPos;
+
+        /*Initializes iterator*/
+        public ArrayListIterator() {
+            wizPos = movePointerRight(nextFirst, items.length);
+        }
+
+        /*Checks if collection has next item*/
+        @Override
+        public boolean hasNext() {
+            return wizPos != nextLast;
+        }
+
+        /*Outputs the next item in the Deque*/
+        public T next() {
+            T returnItem = items[wizPos];
+            wizPos = movePointerRight(wizPos, items.length);
+            return returnItem;
+        }
+    }
+
+    /*Public iterator*/
+    public Iterator<T> iterator() {
+        return new ArrayListIterator();
+    }
+
+    /*Checks if element exists in the ArrayDeque*/
+    private boolean contains(T x) {
+        for (T y: this) {
+            if (x.equals(y)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /* Returns whether or not the parameter o is equal to the Deque.
+    o is considered equal if it is a Deque and if it contains the same contents
+    */
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) { return true;}
+        if (other instanceof ArrayDeque) {
+            if (this.size != ((ArrayDeque<T>) other).size) {
+                return false;
+            }
+            for (T x: this) {
+                if (!((ArrayDeque<T>) other).contains(x)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
