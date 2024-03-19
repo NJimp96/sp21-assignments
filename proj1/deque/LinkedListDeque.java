@@ -4,9 +4,9 @@ import java.util.Iterator;
 
 public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     public class Node {
-        public T item;
-        public Node next;
-        public Node prev;
+        private T item;
+        private Node next;
+        private Node prev;
 
         public Node(T i, Node n, Node p) {
             item = i;
@@ -208,12 +208,12 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         if (this == other) {
             return true;
         }
-        if (other instanceof LinkedListDeque) {
-            if (this.size != ((LinkedListDeque<T>) other).size) {
+        if (other instanceof Deque) {
+            if (this.size != ((Deque<T>) other).size()) {
                 return false;
             }
-            for (T x: this) {
-                if (!((LinkedListDeque<T>) other).contains(x)) {
+            for (T x: (Deque<T>) other) {
+                if (!(this.contains(x))) {
                     return false;
                 }
             }

@@ -294,12 +294,15 @@ public class ArrayDequeTest {
         ArrayDeque<Integer> ad1 = new ArrayDeque<Integer>();
         ArrayDeque<Integer> ad2 = new ArrayDeque<Integer>();
         ArrayDeque<Integer> ad3 = new ArrayDeque<Integer>();
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
         for (int i = 0; i < 10000; i++) {
             ad1.addLast(i);
             ad2.addFirst(i);
+            lld1.addFirst(i);
             ad3.addFirst(i*2);
         }
         assertTrue(ad1.equals(ad2));
-        assertFalse(ad2.equals(ad3));
+        assertTrue(ad2.equals(lld1));
+        assertFalse(lld1.equals(ad3));
     }
 }

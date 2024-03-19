@@ -140,7 +140,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    /* Removes and returns the item at the front of the deque. If no such item exists, returns null */
+    /* Removes and returns the item at the front of the deque.
+    If no such item exists, returns null */
     public T removeFirst() {
         resize();
         if (size == 0) {
@@ -194,7 +195,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         private int wizPos;
 
         /*Initializes iterator*/
-        public ArrayListIterator() {
+        ArrayListIterator() {
             wizPos = movePointerRight(nextFirst, items.length);
         }
 
@@ -236,12 +237,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (this == other) {
             return true;
         }
-        if (other instanceof ArrayDeque) {
-            if (this.size != ((ArrayDeque<T>) other).size) {
+        if (other instanceof Deque) {
+            if (this.size != ((Deque<T>) other).size()) {
                 return false;
             }
-            for (T x: this) {
-                if (!((ArrayDeque<T>) other).contains(x)) {
+            for (T x: (Deque<T>) other) {
+                if (!(this.contains(x))) {
                     return false;
                 }
             }
