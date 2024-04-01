@@ -28,8 +28,8 @@ public interface Deque<T> extends Iterable<T> {
 
     /* Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
     If no such item exists, returns null. Must not alter the deque
-     */
-   T get(int index);
+    */
+    T get(int index);
 
     /* Returns an iterator for the deque */
     Iterator<T> iterator();

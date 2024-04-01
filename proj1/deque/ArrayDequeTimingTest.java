@@ -3,11 +3,12 @@ import edu.princeton.cs.algs4.Stopwatch;
 
 public class ArrayDequeTimingTest {
 
-    private static void printTimingTable(ArrayDeque<Integer> Ns, ArrayDeque<Double> times, ArrayDeque<Integer> opCounts) {
+    private static void printTimingTable(ArrayDeque<Integer> ns, ArrayDeque<Double> times,
+                                         ArrayDeque<Integer> opCounts) {
         System.out.printf("%12s %12s %12s %12s\n", "N", "time (s)", "# ops", "microsec/op");
         System.out.printf("------------------------------------------------------------\n");
-        for (int i = 0; i < Ns.size(); i += 1) {
-            int N = Ns.get(i);
+        for (int i = 0; i < ns.size(); i += 1) {
+            int N = ns.get(i);
             double time = times.get(i);
             int opCount = opCounts.get(i);
             double timePerOp = time / opCount * 1e6;
@@ -23,7 +24,7 @@ public class ArrayDequeTimingTest {
         ArrayDeque<Integer> listToTime = new ArrayDeque<>();
         int ops = 0;
 
-        for(int i = 0; i < desiredSize; i++) {
+        for (int i = 0; i < desiredSize; i++) {
             listToTime.addLast(i);
             ops++;
         }
@@ -35,7 +36,7 @@ public class ArrayDequeTimingTest {
         ArrayDeque<Double> listTimes = new ArrayDeque<>();
 
 
-        for(double n = 0; n < 8; n++) {
+        for (double n = 0; n < 8; n++) {
             int listSize = (int) (Math.pow(2, n) * 1000);
             Stopwatch sw = new Stopwatch();
             int opsCompleted = createAList(listSize);

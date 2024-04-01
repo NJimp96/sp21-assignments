@@ -20,13 +20,13 @@ public class LinkedListDequeTest {
 
 
         LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
-        assertTrue("A newly initialized LLDeque should be empty", lld1.isEmpty());
+        assertTrue("A newly initialized LLDeque should be empty", lld1.size() == 0);
         lld1.addFirst("front");
 
 		// The && operator is the same as "and" in Python.
         // It's a binary operator that returns true if both arguments true, and false otherwise.
         assertEquals(1, lld1.size());
-        assertFalse("lld1 should now contain 1 item", lld1.isEmpty());
+        assertFalse("lld1 should now contain 1 item", lld1.size() == 0);
 
 		lld1.addLast("middle");
 		assertEquals(2, lld1.size());
@@ -46,7 +46,7 @@ public class LinkedListDequeTest {
 
         LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
 		// should be empty
-		assertTrue("lld1 should be empty upon initialization", lld1.isEmpty());
+		assertTrue("lld1 should be empty upon initialization", lld1.size() == 0);
         lld1.printDeque();
 
 		lld1.addLast(20);
@@ -82,7 +82,7 @@ public class LinkedListDequeTest {
 
         lld1.removeFirst();
         // should be empty
-        assertTrue("lld1 should be empty after removing all items", lld1.isEmpty());
+        assertTrue("lld1 should be empty after removing all items", lld1.size() == 0);
         lld1.printDeque();
         Iterator<Integer> seer2 = lld1.iterator();
 
