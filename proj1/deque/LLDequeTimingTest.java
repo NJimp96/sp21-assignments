@@ -3,11 +3,12 @@ import edu.princeton.cs.algs4.Stopwatch;
 
 public class LLDequeTimingTest {
 
-    private static void printTimingTable(LinkedListDeque<Integer> Ns, LinkedListDeque<Double> times, LinkedListDeque<Integer> opCounts) {
+    private static void printTimingTable(LinkedListDeque<Integer> ns, LinkedListDeque<Double> times,
+                                         LinkedListDeque<Integer> opCounts) {
         System.out.printf("%12s %12s %12s %12s\n", "N", "time (s)", "# ops", "microsec/op");
         System.out.printf("------------------------------------------------------------\n");
-        for (int i = 0; i < Ns.size(); i += 1) {
-            int N = Ns.get(i);
+        for (int i = 0; i < ns.size(); i += 1) {
+            int N = ns.get(i);
             double time = times.get(i);
             int opCount = opCounts.get(i);
             double timePerOp = time / opCount * 1e6;
@@ -22,7 +23,7 @@ public class LLDequeTimingTest {
     public static LinkedListDeque<Integer> createSLList(int desiredSize) {
         LinkedListDeque<Integer> listToTime = new LinkedListDeque<>();
 
-        for(int i = 0; i < desiredSize; i++) {
+        for (int i = 0; i < desiredSize; i++) {
             listToTime.addLast(i);
         }
         return listToTime;
@@ -34,7 +35,7 @@ public class LLDequeTimingTest {
         LinkedListDeque<Double> listTimes = new LinkedListDeque<>();
         int opsCompleted = 10000;
 
-        for(double n = 0; n < 8; n++) {
+        for (double n = 0; n < 8; n++) {
             int listSize = (int) (Math.pow(2, n) * 1000);
             LinkedListDeque<Integer> listInUse = createSLList(listSize);
             Stopwatch sw = new Stopwatch();

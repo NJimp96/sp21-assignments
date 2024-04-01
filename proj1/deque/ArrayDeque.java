@@ -12,7 +12,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private int size;
 
     /*min size of arraydeque for resizing smaller*/
-    private int minResize = 16;
+    private int minResize = 8;
 
     /*Creates an empty array deque*/
     public ArrayDeque() {
